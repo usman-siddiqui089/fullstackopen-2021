@@ -20,16 +20,23 @@ const Statistics = ({value}) => {
   const positive = () => {
     return (total===0) ? 0 : (value.good / total) * 100
   }
-  return (
-    <>
-      <p>Good: {value.good}</p>
-      <p>Neutral: {value.neutral}</p>
-      <p>Bad: {value.bad}</p>
-      <p>All: {total}</p>
-      <p>Average: {average()}</p>
-      <p>Positive: {positive()}%</p>
-    </>
-  )
+  if(total === 0){
+    return (
+      <p>No feedback given yet :(</p>
+    )
+  }
+  else{
+    return (
+      <>
+        <p>Good: {value.good}</p>
+        <p>Neutral: {value.neutral}</p>
+        <p>Bad: {value.bad}</p>
+        <p>All: {total}</p>
+        <p>Average: {average()}</p>
+        <p>Positive: {positive()}%</p>
+      </>
+    )
+  }
 }
 const App = () => {
   const [feedack, setCount] = useState({
