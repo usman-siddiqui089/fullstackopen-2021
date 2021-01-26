@@ -64,8 +64,8 @@ const App = () => {
   return (
     <>
       <Title text={'Give Feedback'}/>
-      <Button text={'Good'} handleClick={setFeedbackCount('good')}/>
-      <Button text={'Neutral'} handleClick={setFeedbackCount('neutral')}/>
+      <Button text={'Good'} handleClick={setFeedbackCount('good')}/>&nbsp;
+      <Button text={'Neutral'} handleClick={setFeedbackCount('neutral')}/>&nbsp;
       <Button text={'Bad'} handleClick={setFeedbackCount('bad')}/>
       <br />
       <Title text={'Statistics'}/>
