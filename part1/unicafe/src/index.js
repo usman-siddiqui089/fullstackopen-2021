@@ -12,13 +12,18 @@ const Button = ({handleClick, text}) => {
     <button onClick={handleClick}>{text}</button>
   )
 }
-const Statistics = ({value}) => {
-  const total = value.good + value.neutral + value.bad
+const Statistic = ({text,value}) => {
+  return (
+    <p>{text}: {value}</p>
+  )
+}
+const Statistics = ({feedback}) => {
+  const total = feedback.good + feedback.neutral + feedback.bad
   const average = () => {
-    return (total === 0) ? 0 : (value.good - value.bad) / total
+    return (total === 0) ? 0 : (feedback.good - feedback.bad) / total
   }
   const positive = () => {
-    return (total===0) ? 0 : (value.good / total) * 100
+    return (total===0) ? 0 : `${(feedback.good / total) * 100}%`
   }
   if(total === 0){
     return (
@@ -28,12 +33,12 @@ const Statistics = ({value}) => {
   else{
     return (
       <>
-        <p>Good: {value.good}</p>
-        <p>Neutral: {value.neutral}</p>
-        <p>Bad: {value.bad}</p>
-        <p>All: {total}</p>
-        <p>Average: {average()}</p>
-        <p>Positive: {positive()}%</p>
+        <Statistic text={'Good'} value={feedback.good}/>
+        <Statistic text={'Neutral'} value={feedback.neutral}/>
+        <Statistic text={'Bad'} value={feedback.bad}/>
+        <Statistic text={'All'} value={total}/>
+        <Statistic text={'Average'} value={average()}/>
+        <Statistic text={'Positive'} value={positive()}/>
       </>
     )
   }
@@ -64,7 +69,7 @@ const App = () => {
         bad: feedack.bad + 1
       }
     }
-    if(newCount != {}){
+    if(newCount !== {}){
       setCount(newCount)
     }
   }
@@ -76,7 +81,7 @@ const App = () => {
       <Button text={'Bad'} handleClick={setFeedbackCount('bad')}/>
       <br />
       <Title text={'Statistics'}/>
-      <Statistics value={feedack}/>
+      <Statistics feedback={feedack}/>
     </>
   )
 }
