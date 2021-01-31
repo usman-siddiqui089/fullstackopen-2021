@@ -12,11 +12,19 @@ const App = () => {
     }
     const addContact = (event) => {
         event.preventDefault()
-        const newPerson = {
-            name: newName
+        const isFound = persons.find(person => {
+            return person.name === newName ? true : false
+        })
+        if(isFound){
+            alert(`${newName} is already present in phonebook. Please add new name.`)
         }
-        setPersons(persons.concat(newPerson))
-        setNewName('')
+        else{
+            const newPerson = {
+                name: newName
+            }
+            setPersons(persons.concat(newPerson))
+            setNewName('')
+        }
     }
     return (
       <>
