@@ -4,7 +4,7 @@ import Person from './Person'
 const Contacts = ({contacts}) => {
     return (
         <>
-            {contacts.map(contact => <Person key={contact.name} name={contact.name}/>)}
+            {contacts.map(contact => <Person key={contact.name} name={contact.name} phone={contact.phone}/>)}
         </>
     )
 }
