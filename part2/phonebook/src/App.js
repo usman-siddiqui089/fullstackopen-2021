@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import Title from './component/Title'
 import Contacts from './component/Contacts'
 import Search from './component/Search'
+import NewPersonForm from './component/NewPersonForm'
+import DisplayContacts from './component/DisplayContacts'
 
 const App = () => {
     const [persons, setPersons] = useState([
@@ -65,15 +67,9 @@ const App = () => {
         <Title text='Phonebook'/>
         <Search currentVal={searchVal} onChangeHandler={searchItem}/>
         <Title text='Add new contact'/>
-        <form onSubmit={addContact}>
-            <div>
-                Enter Name: <input value={newName} onChange={updateNames}/><br /><br />
-                Enter Phone: <input value={newPhone} onChange={updatePhone}/>
-            </div><br />
-            <button type='submit'>Save Contact</button>
-        </form>
+        <NewPersonForm onSubmitHandler={addContact} nameVal={newName} phoneVal={newPhone} onChangeName={updateNames} onChangePhone={updatePhone}/>
         <Title text='Contacts'/>
-        {displayContacts()}
+        <DisplayContacts showData={displayContacts()}/>
       </>
     )
 }
