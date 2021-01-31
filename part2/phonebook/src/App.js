@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import Title from './component/Title'
 import Contacts from './component/Contacts'
+import Search from './component/Search'
 
 const App = () => {
     const [persons, setPersons] = useState([
@@ -11,11 +12,15 @@ const App = () => {
     ])
     const [newName, setNewName] = useState('')
     const [newPhone, setNewPhone] = useState('')
+    const [searchVal, setSearchVal] = useState('')
     const updateNames = (event) => {
         setNewName(event.target.value)
     }
     const updatePhone = (event) => {
         setNewPhone(event.target.value)
+    }
+    const searchItem = (event) => {
+        setSearchVal(event.target.value)
     }
     const addContact = (event) => {
         event.preventDefault()
@@ -35,9 +40,31 @@ const App = () => {
             setNewPhone('')
         }
     }
+    const displayContacts = () => {
+        if (searchVal !== ''){
+            const searchResult = persons.filter(person => (person.name.toLowerCase().includes(searchVal) || person.phone.includes(searchVal)))
+            if(searchResult.length !== 0){
+                return (
+                    <Contacts contacts={searchResult}/>
+                )
+            }
+            else{
+                return (
+                    <p>Sorry! No contact found</p>
+                )
+            }
+        }
+        else{
+            return(
+                <Contacts contacts={persons}/>
+            )
+        }
+    }
     return (
       <>
         <Title text='Phonebook'/>
+        <Search currentVal={searchVal} onChangeHandler={searchItem}/>
+        <Title text='Add new contact'/>
         <form onSubmit={addContact}>
             <div>
                 Enter Name: <input value={newName} onChange={updateNames}/><br /><br />
@@ -46,7 +73,7 @@ const App = () => {
             <button type='submit'>Save Contact</button>
         </form>
         <Title text='Contacts'/>
-        <Contacts contacts={persons}/>
+        {displayContacts()}
       </>
     )
 }
