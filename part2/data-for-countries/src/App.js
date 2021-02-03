@@ -40,7 +40,7 @@ const App = () => {
       }
       else{
         return (
-          <CountriesList countriesArr={list}/>
+          <CountriesList countriesArr={list} onClickHandler={showResult}/>
         )
       }
     }
@@ -49,6 +49,9 @@ const App = () => {
         <p>Search any country to see its details</p>
       )
     }
+  }
+  const showResult = (event) => {
+    setSearchVal(event.target.value)
   }
   return (
     <>
