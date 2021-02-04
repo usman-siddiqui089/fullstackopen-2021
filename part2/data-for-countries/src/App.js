@@ -5,6 +5,7 @@ import Search from './components/Search'
 import Country from './components/Country'
 import CountriesList from './components/CountriesList'
 import Display from './components/Display'
+import Weather from './components/Weather'
 
 const App = () => {
   const [searchVal, setSearchVal] = useState('')
@@ -35,7 +36,10 @@ const App = () => {
       else if(list.length === 1){
         const country = list[0]
         return (
-          <Country name={country.name} capital={country.capital} population={country.population} languagesArr={country.languages} imageSrc={country.flag}/>
+          <>
+            <Country name={country.name} capital={country.capital} population={country.population} languagesArr={country.languages} imageSrc={country.flag}/>
+            <Weather capital={country.capital}/>
+          </>
         )
       }
       else{
