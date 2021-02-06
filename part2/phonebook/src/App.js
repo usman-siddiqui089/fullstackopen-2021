@@ -27,6 +27,19 @@ const App = () => {
     const searchItem = (event) => {
         setSearchVal(event.target.value)
     }
+    const updateContact = (id) => {
+        const newPerson = {
+            name: newName,
+            number: newNumber
+        }
+        personService
+            .update(id,newPerson)
+            .then(changedPerson => {
+                setPersons(persons.map(p => (p.id !== id) ? p : changedPerson))
+                setNewName('')
+                setNewNumber('')
+            })
+    }
     const addContact = (event) => {
         event.preventDefault()
         const isPersonDuplicate = persons.find(person => (person.name === newName && person.number === newNumber) ? true : false)
@@ -39,34 +52,14 @@ const App = () => {
             const confirmation = window.confirm(`'${newNumber}' is already added to phonebook, replace the old name with a new name?`)
             if(confirmation){
                 const person = persons.find(person => person.number === newNumber)
-                const newPerson = {
-                    ...person,
-                    name: newName
-                }
-                personService
-                    .update(person.id,newPerson)
-                    .then(changedPerson => {
-                        setPersons(persons.map(p => (p.id !== person.id) ? p : changedPerson))
-                        setNewName('')
-                        setNewNumber('')
-                    })
+                updateContact(person.id)
             }
         }
         else if(isNameDuplicate){
             const confirmation = window.confirm(`'${newName}' is already added to phonebook, replace the old number with a new number?`)
             if(confirmation){
                 const person = persons.find(person => person.name === newName)
-                const newPerson = {
-                    ...person,
-                    number: newNumber
-                }
-                personService
-                    .update(person.id,newPerson)
-                    .then(changedPerson => {
-                        setPersons(persons.map(p => (p.id !== person.id) ? p : changedPerson))
-                        setNewName('')
-                        setNewNumber('')
-                    })
+                updateContact(person.id)
             }
         }
         else{
