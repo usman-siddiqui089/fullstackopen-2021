@@ -29,11 +29,45 @@ const App = () => {
     }
     const addContact = (event) => {
         event.preventDefault()
-        const isFound = persons.find(person => {
-            return (person.name === newName || person.number === newNumber) ? true : false
-        })
-        if(isFound){
+        const isPersonDuplicate = persons.find(person => (person.name === newName && person.number === newNumber) ? true : false)
+        const isPhoneDuplicate = persons.find(person => (person.name !== newName && person.number === newNumber) ? true : false)
+        const isNameDuplicate = persons.find(person => (person.name === newName && person.number !== newNumber) ? true : false)
+        if(isPersonDuplicate){
             alert(`This person name or phone is already present in phonebook. Please try new.`)
+        }
+        else if(isPhoneDuplicate){
+            const confirmation = window.confirm(`'${newNumber}' is already added to phonebook, replace the old name with a new name?`)
+            if(confirmation){
+                const person = persons.find(person => person.number === newNumber)
+                const newPerson = {
+                    ...person,
+                    name: newName
+                }
+                personService
+                    .update(person.id,newPerson)
+                    .then(changedPerson => {
+                        setPersons(persons.map(p => (p.id !== person.id) ? p : changedPerson))
+                        setNewName('')
+                        setNewNumber('')
+                    })
+            }
+        }
+        else if(isNameDuplicate){
+            const confirmation = window.confirm(`'${newName}' is already added to phonebook, replace the old number with a new number?`)
+            if(confirmation){
+                const person = persons.find(person => person.name === newName)
+                const newPerson = {
+                    ...person,
+                    number: newNumber
+                }
+                personService
+                    .update(person.id,newPerson)
+                    .then(changedPerson => {
+                        setPersons(persons.map(p => (p.id !== person.id) ? p : changedPerson))
+                        setNewName('')
+                        setNewNumber('')
+                    })
+            }
         }
         else{
             const newPerson = {
