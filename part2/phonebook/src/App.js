@@ -54,7 +54,7 @@ const App = () => {
             const searchResult = persons.filter(person => (person.name.toLowerCase().includes(searchVal) || person.number.includes(searchVal)))
             if(searchResult.length !== 0){
                 return (
-                    <Contacts contacts={searchResult}/>
+                    <Contacts contacts={searchResult} onClickHandler={deleteContact}/>
                 )
             }
             else{
@@ -65,8 +65,20 @@ const App = () => {
         }
         else{
             return(
-                <Contacts contacts={persons}/>
+                <Contacts contacts={persons} onClickHandler={deleteContact}/>
             )
+        }
+    }
+    const deleteContact = (event) => {
+        const id = parseInt(event.target.value)
+        const person = persons.find(person => person.id === id)
+        const confirmation = window.confirm(`Delete ${person.name}?`)
+        if(confirmation){
+            personService
+            .deleteContact(id)
+            .then(() => {
+                setPersons(persons.filter(p => p.id !== id))
+            })
         }
     }
     return (

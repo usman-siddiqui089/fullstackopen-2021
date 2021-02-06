@@ -1,10 +1,10 @@
 import React from 'react'
 import Person from './Person'
 
-const Contacts = ({contacts}) => {
+const Contacts = ({contacts,onClickHandler}) => {
     return (
         <>
-            {contacts.map(contact => <Person key={contact.name} name={contact.name} phone={contact.number}/>)}
+            {contacts.map(contact => <Person key={contact.name} id={contact.id} name={contact.name} phone={contact.number} onClickHandler={onClickHandler}/>)}
         </>
     )
 }

@@ -11,24 +11,9 @@
       "id": 2
     },
     {
-      "name": "Dan Abramov",
-      "number": "12-43-234345",
+      "name": "Jack Hartley",
+      "number": "1-232-555-1111",
       "id": 3
-    },
-    {
-      "name": "Mary Poppendieck",
-      "number": "39-23-6423122",
-      "id": 4
-    },
-    {
-      "name": "James Maddock",
-      "number": "1-232-666-1664",
-      "id": 5
-    },
-    {
-      "name": "Fareeha Idrees",
-      "number": "0-121-555-1233",
-      "id": 6
     }
   ]
 }
