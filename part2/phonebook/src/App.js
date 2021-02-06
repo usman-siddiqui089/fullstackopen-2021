@@ -5,12 +5,17 @@ import Contacts from './component/Contacts'
 import Search from './component/Search'
 import NewPersonForm from './component/NewPersonForm'
 import DisplayContacts from './component/DisplayContacts'
+import Notification from './component/Notification'
 
 const App = () => {
     const [persons, setPersons] = useState([])
     const [newName, setNewName] = useState('')
     const [newNumber, setNewNumber] = useState('')
     const [searchVal, setSearchVal] = useState('')
+    const [alertMessage, setAlertMessage] = useState({
+        type: null,
+        content: null
+    })
     useEffect(()=>{
         personService
             .getAll()
@@ -27,6 +32,19 @@ const App = () => {
     const searchItem = (event) => {
         setSearchVal(event.target.value)
     }
+    const displayAlert = (type,message) => {
+        const alert = {
+            type: type,
+            content: message
+        }
+        setAlertMessage(alert)
+        setTimeout(() => {
+            setAlertMessage({
+                type: null,
+                content: null
+            })
+        }, 5000);
+    }
     const updateContact = (id) => {
         const newPerson = {
             name: newName,
@@ -39,6 +57,11 @@ const App = () => {
                 setNewName('')
                 setNewNumber('')
             })
+            .then(()=>{
+                const message = `Modified ${newPerson.name} successfully.`
+                const type = 'success'
+                displayAlert(type,message)
+            })
     }
     const addContact = (event) => {
         event.preventDefault()
@@ -46,7 +69,9 @@ const App = () => {
         const isPhoneDuplicate = persons.find(person => (person.name !== newName && person.number === newNumber) ? true : false)
         const isNameDuplicate = persons.find(person => (person.name === newName && person.number !== newNumber) ? true : false)
         if(isPersonDuplicate){
-            alert(`This person name or phone is already present in phonebook. Please try new.`)
+            const message = 'This person name and phone is already present in phonebook. Please try new.'
+            const type = 'error'
+            displayAlert(type,message)
         }
         else if(isPhoneDuplicate){
             const confirmation = window.confirm(`'${newNumber}' is already added to phonebook, replace the old name with a new name?`)
@@ -73,6 +98,11 @@ const App = () => {
                     setPersons(persons.concat(returnedPerson))
                     setNewName('')
                     setNewNumber('')
+                })
+                .then(()=>{
+                    const message = `'${newPerson.name}' added successfully to Phonebook.`
+                    const type = 'success'
+                    displayAlert(type,message)
                 })
         }
     }
@@ -106,11 +136,22 @@ const App = () => {
             .then(() => {
                 setPersons(persons.filter(p => p.id !== id))
             })
+            .then(()=>{
+                const message = `'${person.name}' deleted successfully.`
+                const type = 'success'
+                displayAlert(type,message)
+            })
+            .catch(()=>{
+                const message = `Information of '${person.name}' has already been removed from the phonebook`
+                const type = 'error'
+                displayAlert(type,message)
+            })
         }
     }
     return (
       <>
         <Title text='Phonebook'/>
+        <Notification type={alertMessage.type} message={alertMessage.content}/>
         <Search currentVal={searchVal} onChangeHandler={searchItem}/>
         <Title text='Add new contact'/>
         <NewPersonForm onSubmitHandler={addContact} nameVal={newName} phoneVal={newNumber} onChangeName={updateNames} onChangePhone={updatePhone}/>
