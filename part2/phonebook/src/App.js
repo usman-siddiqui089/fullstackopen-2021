@@ -104,6 +104,11 @@ const App = () => {
                     const type = 'success'
                     displayAlert(type,message)
                 })
+                .catch(error => {
+                    const message = error.response.data
+                    const type = 'error'
+                    displayAlert(type, message)
+                })
         }
     }
     const displayContacts = () => {
@@ -127,7 +132,7 @@ const App = () => {
         }
     }
     const deleteContact = (event) => {
-        const id = parseInt(event.target.value)
+        const id = event.target.value
         const person = persons.find(person => person.id === id)
         const confirmation = window.confirm(`Delete ${person.name}?`)
         if(confirmation){
